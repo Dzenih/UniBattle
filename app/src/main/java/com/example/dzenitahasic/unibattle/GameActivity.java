@@ -62,6 +62,17 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(map);
         mapFragment.getMapAsync(this);
+        if(player == null)
+        {
+            player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player_icon), 100, 12);
+        }
+        if(monsters.isEmpty())
+        {
+            createRandomMonster(new LatLng(55.370468, 10.428188)); // starbucks
+            createRandomMonster(new LatLng(55.369967, 10.428477)); // somewhere
+            createRandomMonster(new LatLng(55.369149, 10.428066)); // canteen
+            createRandomMonster(new LatLng(55.367320, 10.430752)); // toilet
+        }
 
     }
     private LocationManager locationManager;
@@ -79,7 +90,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player_icon), 100, 12);
+
+
         mMap = googleMap;
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -87,21 +99,16 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         LatLng sduStarbucks = new LatLng(55.370468, 10.428188);
-        if(monsters.isEmpty())
-        {
-            createRandomMonster(new LatLng(55.370468, 10.428188)); // starbucks
-            createRandomMonster(new LatLng(55.369967, 10.428477)); // somewhere
-            createRandomMonster(new LatLng(55.369149, 10.428066)); // canteen
-            createRandomMonster(new LatLng(55.367320, 10.430752)); // toilet
-        }
+
         addAllMonstersToMap();
 
+        Log.d("Game", "Sensor changed");
 
         mMap.setMinZoomPreference(16);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sduStarbucks));
         mMap.setMyLocationEnabled(false);
 
-        playerMarker = mMap.addMarker(new MarkerOptions().title("Player").position(sduStarbucks).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("player_icon",ICON_WIDTH,ICON_HEIGHT))));
+        playerMarker = mMap.addMarker(new MarkerOptions().title("HP: "+player.getHealthValue()).position(sduStarbucks).icon(BitmapDescriptorFactory.fromBitmap(resizeMapIcons("player_icon",ICON_WIDTH,ICON_HEIGHT))));
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new LocationUpdateListener();
@@ -190,7 +197,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             {
                 float[] distance = new float[1];
                 Location.distanceBetween(marker.getPosition().latitude,marker.getPosition().longitude,position.latitude, position.longitude,distance);
-                if(distance[0]<40) // less than approx 40 meters then start a fight!
+                Monster monster = monsters.get(marker.getSnippet());
+                if(distance[0]<40&&monster.getHealthValue()>0) // less than approx 40 meters then start a fight!
                 {
                     Intent fightActivity = new Intent(getApplicationContext(), FightActivity.class);
                     fightActivity.putExtra("MONSTER",marker.getSnippet());

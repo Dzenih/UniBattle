@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.FloatMath;
 import android.util.Log;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import objects.Monster;
 
@@ -35,13 +37,15 @@ public class FightActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fight);
         String id = getIntent().getStringExtra("MONSTER");
         monster = GameActivity.monsters.get(id);
+        ((ImageView) findViewById(R.id.imageView1)).setImageBitmap(monster.getImage());
         GameActivity.player.doDamage(monster.getDamage());
-
+        TextView text1 = (TextView) findViewById(R.id.text1);
+        text1.setText(monster.getName());
 
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         mShakeDetector = new ShakeDetector();
         mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
@@ -53,6 +57,16 @@ public class FightActivity extends AppCompatActivity {
                 FightActivity.this.finish();
             }
         });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+    @Override
+    public void onPause() {
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
 
