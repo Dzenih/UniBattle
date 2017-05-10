@@ -1,19 +1,23 @@
 package objects;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.example.dzenitahasic.unibattle.R;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 /**
  * Created by dzenitahasic on 03/05/2017.
  */
 
-public class Player {
+public class Player extends IngameObject{
 
-    private int damage;
-    private int maxHealth;
-    private int healthValue;
     private String nickname;
 
-    public Player(){
+    public Player(Bitmap image, int maxHealth, int damage) {
+
+        super(image,maxHealth, damage);
 
     }
-
 
 }

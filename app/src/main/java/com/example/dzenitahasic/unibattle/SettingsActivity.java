@@ -42,8 +42,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     @Override
     public void onBackPressed(){
-        Intent newActivity = new Intent (getApplicationContext(), MainActivity.class);
-        SettingsActivity.this.startActivity(newActivity);
         SettingsActivity.this.finish();
     }
 

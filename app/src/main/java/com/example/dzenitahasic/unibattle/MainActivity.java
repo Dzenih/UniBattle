@@ -3,6 +3,7 @@ package com.example.dzenitahasic.unibattle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,12 +21,13 @@ public class MainActivity extends AppCompatActivity {
         Button playBtn = (Button) findViewById(R.id.playBtn);
         Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
 
+
+
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newActivity1 = new Intent(getApplicationContext(), MapsActivity.class);
-                MainActivity.this.startActivity(newActivity1);
-                MainActivity.this.finish();
+                Intent mapsActivity = new Intent(getApplicationContext(), GameActivity.class);
+                MainActivity.this.startActivity(mapsActivity);
 
             }
 
@@ -34,22 +36,14 @@ public class MainActivity extends AppCompatActivity {
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newActivity2 = new Intent(getApplicationContext(), SettingsActivity.class);
-                MainActivity.this.startActivity(newActivity2);
-                MainActivity.this.finish();
+                Intent securityActivity = new Intent(getApplicationContext(), SettingsActivity.class);
+                MainActivity.this.startActivity(securityActivity);
 
             }
 
         });
     }
 
-    /**
-     * This method displays the given quantity value on the screen.
-     */
-
-    private void startGame(View view) {
-
-    }
 
 
 }
