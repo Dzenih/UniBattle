@@ -50,11 +50,14 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed() {
         GameActivity.this.finish();
+        stopService(svc);
     }
 
 
+    Intent svc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         permissionCheck();
@@ -62,6 +65,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(map);
         mapFragment.getMapAsync(this);
+        svc =new Intent(this, BackgroundSoundService.class);
+        startService(svc);
         if(player == null)
         {
             player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player_icon), 100, 12);
@@ -203,7 +208,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Intent fightActivity = new Intent(getApplicationContext(), FightActivity.class);
                     fightActivity.putExtra("MONSTER",marker.getSnippet());
                     GameActivity.this.startActivity(fightActivity );
-                    GameActivity.this.finish();
                     break;
                 }
             }

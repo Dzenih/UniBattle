@@ -2,6 +2,9 @@ package com.example.dzenitahasic.unibattle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -26,11 +29,10 @@ public class FightActivity extends AppCompatActivity {
     private ShakeDetector mShakeDetector;
     @Override
     public void onBackPressed() {
-        Intent gameActivity = new Intent(getApplicationContext(), GameActivity.class);
-        FightActivity.this.startActivity(gameActivity );
         FightActivity.this.finish();
     }
     private Monster monster;
+    SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class FightActivity extends AppCompatActivity {
         text1.setText(monster.getName());
 
 
+        db=openOrCreateDatabase("MonsterDB", Context.MODE_PRIVATE, null);
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
@@ -52,8 +55,7 @@ public class FightActivity extends AppCompatActivity {
             @Override
             public void onShake(int count) {
                 monster.doDamage(150);
-                Intent gameActivity = new Intent(getApplicationContext(), GameActivity.class);
-                FightActivity.this.startActivity(gameActivity );
+                db.execSQL("INSERT INTO monster VALUES('"+monster.getName()+"');");
                 FightActivity.this.finish();
             }
         });

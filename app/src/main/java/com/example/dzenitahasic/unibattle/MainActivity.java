@@ -1,6 +1,8 @@
 package com.example.dzenitahasic.unibattle;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
 
+    SQLiteDatabase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,10 +26,15 @@ public class MainActivity extends AppCompatActivity {
         Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
 
 
+
+        SQLiteDatabase db;
+        db=openOrCreateDatabase("MonsterDB", Context.MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS monster(name VARCHAR);");
+
         killedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent killedActivity = new Intent(getApplicationContext(), KilledMonsters.class);
+                Intent killedActivity = new Intent(getApplicationContext(), KilledActivity.class);
                 MainActivity.this.startActivity(killedActivity);
 
             }

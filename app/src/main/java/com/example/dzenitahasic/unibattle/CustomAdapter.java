@@ -45,7 +45,7 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
         switch (v.getId())
         {
             case R.id.item_info:
-                Snackbar.make(v, "Release date " +dataModel.getFeature(), Snackbar.LENGTH_LONG)
+                Snackbar.make(v, "Died too young " +dataModel.getFeature(), Snackbar.LENGTH_LONG)
                         .setAction("No action", null).show();
                 break;
         }
